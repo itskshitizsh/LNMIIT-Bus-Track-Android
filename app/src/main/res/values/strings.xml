@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Finding Bus</string>
+    <string name="app_logo">App Logo</string>
+    <string name="enter_user_name">Username</string>
+    <string name="enter_password">Password</string>
+    <string name="get_started">Get Started</string>
+    <string name="just_a_few_details_to_get_started">Just a few details to get started</string>
+    <string name="i_agree_to_the_terms_and_conditions">I agree to the Terms and Conditions</string>
+    <string name="sign_in">Sign In</string>
+</resources>
