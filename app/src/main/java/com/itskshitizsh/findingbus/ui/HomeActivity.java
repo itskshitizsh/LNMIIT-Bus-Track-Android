@@ -1,5 +1,6 @@
 package com.itskshitizsh.findingbus.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,8 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.itskshitizsh.findingbus.R;
+import com.itskshitizsh.findingbus.login.LoginActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -34,10 +38,26 @@ public class HomeActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    private String currentUserName = "";
+    private String currentUserEmail = "";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("username")&&intent.hasExtra("userEmail")) {
+            currentUserName = intent.getStringExtra("username");
+            currentUserEmail = intent.getStringExtra("userEmail");
+        } else {
+            currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            currentUserName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        }
+
+        Toast.makeText(this, currentUserName + "\n" + currentUserEmail, Toast.LENGTH_SHORT).show();
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,6 +73,8 @@ public class HomeActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+
 
     }
 
@@ -70,6 +92,12 @@ public class HomeActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        if (id==R.id.action_sign_out) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
 
         //noinspection SimplifiableIfStatement
         /*if (id == R.id.action_info) {

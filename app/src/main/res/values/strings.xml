@@ -17,4 +17,10 @@
     <string name="tab_text_3">Bus 3</string>
     <string name="tab_text_4">Bus 4</string>
 
+    <string name="update_password">Update password to continue</string>
+    <string name="conform_password">Conform password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="action_signOut">Sign out</string>
+
+
 </resources>
