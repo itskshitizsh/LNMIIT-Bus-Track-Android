@@ -19,13 +19,16 @@
         android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginBottom="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="14dp"
         android:contentDescription="@string/app_logo"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_directions_bus" />
 
 
     <ScrollView
+        android:id="@+id/logInLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo">
@@ -53,7 +56,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="16dp"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
                 android:text="@string/just_a_few_details_to_get_started"
@@ -63,9 +66,9 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp">
+                android:layout_marginTop="8dp">
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/userEmailAddress"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -84,9 +87,9 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp">
+                android:layout_marginTop="8dp">
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/userPassword"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -104,6 +107,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <RadioButton
+                android:id="@+id/radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -112,9 +116,10 @@
                 android:paddingStart="5dp"
                 android:text="@string/i_agree_to_the_terms_and_conditions"
                 android:textColor="@color/colorWhite"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <Button
+                android:id="@+id/logInButton"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
@@ -123,43 +128,33 @@
                 android:background="@drawable/login_button"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
-                android:text="@string/sign_in"
+                android:text="@string/log_in"
                 android:textColor="@color/colorWhite"
                 android:textSize="24sp"
                 android:textStyle="normal" />
         </LinearLayout>
     </ScrollView>
-    <!--
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logInLayout">
+
+        <TextView
+            android:id="@+id/orTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:padding="4dp"
+            android:text="@string/or"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/userNameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                android:hint="@string/enter_user_name"
-                android:inputType="textEmailAddress"
-                android:padding="8dp" />
-        </android.support.design.widget.TextInputLayout>
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <EditText
-                android:id="@+id/passwordEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                android:hint="@string/enter_password"
-                android:inputType="textPassword"
-                android:padding="8dp" />
-        </android.support.design.widget.TextInputLayout>
-    -->
+        <!--
+            SignUp Buttons
+        -->
+    </RelativeLayout>
 
 </RelativeLayout>
