@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -14,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -92,13 +90,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 userPasswordEditText.requestFocus();
                 userPasswordEditText.setError("Enter Password");
             } else {
-                /*if (!termsAndConditions.isChecked()) {
-                    termsAndConditions.requestFocus();
-                    Toast.makeText(getApplicationContext(), "Agree to Terms and Conditions!", Toast.LENGTH_SHORT).show();
-                } else {  }*/
-                    // Rest Code Here!
-                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                    finish();
+
+                progressBar.setVisibility(View.VISIBLE);
+
+                String email = userNameEditText.getText().toString().trim();
+                String password = userPasswordEditText.getText().toString().trim();
+
+                mAuth = FirebaseAuth.getInstance();
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                progressBar.setVisibility(View.INVISIBLE);
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "signInWithEmail:success");
+                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                    finish();
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+
+                                // ...
+                            }
+                        });
             }
         }
 
