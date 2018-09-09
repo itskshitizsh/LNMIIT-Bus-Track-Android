@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = ".LoginActivity";
     private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         findViewById(R.id.logInButton).setOnClickListener(this);
         findViewById(R.id.google_button).setOnClickListener(this);
+
+        progressBar = findViewById(R.id.progress_bar);
 
     }
 
@@ -101,6 +105,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void googleSignIn( ) {
+        progressBar.setVisibility(View.VISIBLE);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -139,6 +145,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");

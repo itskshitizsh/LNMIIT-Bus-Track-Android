@@ -15,6 +15,15 @@
             android:src="@drawable/lnmiit" />
     -->
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:elevation="4dp"
+        android:indeterminateTint="@color/colorPrimary"/>
+
     <ImageView
         android:id="@+id/logo"
         android:layout_width="match_parent"
