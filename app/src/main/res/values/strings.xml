@@ -18,9 +18,10 @@
     <string name="tab_text_4">Bus 4</string>
 
     <string name="update_password">Update password to continue</string>
-    <string name="conform_password">Conform password</string>
+    <string name="confirm_password">Confirm password</string>
     <string name="sign_up">Sign Up</string>
     <string name="action_signOut">Sign out</string>
+    <string name="back_hint_to_exit">Please click BACK again to exit</string>
 
 
 </resources>
