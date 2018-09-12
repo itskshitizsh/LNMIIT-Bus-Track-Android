@@ -3,6 +3,8 @@ package com.itskshitizsh.findingbus.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -43,8 +45,8 @@ public class HomeActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    private String currentUserName = "";
-    private String currentUserEmail = "";
+    private String currentUserName = "unknown";
+    private String currentUserEmail = "unknown";
 
     private boolean doubleBackToExitPressedOnce = false;
 
@@ -63,7 +65,9 @@ public class HomeActivity extends AppCompatActivity {
             currentUserName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         }
 
-        Toast.makeText(this, currentUserName + "\n" + currentUserEmail, Toast.LENGTH_SHORT).show();
+        /*TextView userDetailTextView = findViewById(R.id.user_detail_text_view);
+        String userDetail = currentUserName + "\n" + currentUserEmail;
+        userDetailTextView.setText("madarchod");*/
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -88,40 +92,22 @@ public class HomeActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_logOut :
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                        finish();
+                }
+                return false;
+            }
+        });
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_sign_out) {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
-
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_info) {
-
-
-
-            return true;
-        }*/
-
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * A placeholder fragment containing a simple view.

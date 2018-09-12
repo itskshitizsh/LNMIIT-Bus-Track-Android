@@ -12,12 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_logo"
+        android:id="@+id/user_image_view"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
+        android:id="@+id/user_detail_text_view"
         android:text="@string/user_email_id"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
