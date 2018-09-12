@@ -1,5 +1,6 @@
 package com.itskshitizsh.findingbus.fragments;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -27,5 +28,19 @@ public class FragmentPageAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return 3;
+    }
+
+
+    //Need to change tab layout type to getPage title, Will do it later
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        if (position == 0) {
+            return "LNMIIT";
+        } else if (position == 1) {
+            return "Ajmeri Gate";
+        } else {
+            return "Raja Park";
+        }
     }
 }
