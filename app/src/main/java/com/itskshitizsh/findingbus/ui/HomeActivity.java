@@ -17,6 +17,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -36,6 +38,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private boolean doubleBackToExitPressedOnce = false;
     private FragmentPagerAdapter adapter;
+
+    private static final int MENU_ITEM_ID = 255;
 
 
     @Override
@@ -119,6 +123,7 @@ public class HomeActivity extends AppCompatActivity {
                 builder.setIcon(R.drawable.ic_caution);
                 builder.setTitle("Permission needed!");
                 builder.setMessage("Please allow location permission to use services");
+                builder.setCancelable(false);
                 builder.setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -130,6 +135,36 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.home_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.info:
+                showInfoAlertDialog();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showInfoAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog alertDialog;
+        builder.setCancelable(false);
+        builder.setTitle("Bus information");
+        builder.setMessage(getResources().getString(R.string.bus_info));
+        builder.setIcon(getResources().getDrawable(R.drawable.ic_bus_icon));
+        builder.setPositiveButton("GOT IT", null);
+        alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 
     @Override
     public void onBackPressed() {
