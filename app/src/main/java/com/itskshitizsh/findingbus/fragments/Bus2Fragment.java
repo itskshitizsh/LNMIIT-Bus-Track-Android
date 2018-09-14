@@ -7,6 +7,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,9 +49,12 @@ public class Bus2Fragment extends Fragment implements OnMapReadyCallback, Google
     private LocationRequest locationRequest;
     private Marker currentLocation;
 
+    private FloatingActionButton fab;
+
     public Bus2Fragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +62,19 @@ public class Bus2Fragment extends Fragment implements OnMapReadyCallback, Google
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        fab = rootView.findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mapReady) {
+                    m_map.animateCamera(CameraUpdateFactory.newCameraPosition(target), 1000, null);
+                } else {
+                    Toast.makeText(getContext(), "Please Wait, Map is not ready yet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         return rootView;
     }
