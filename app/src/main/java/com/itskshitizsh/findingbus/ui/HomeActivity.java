@@ -24,18 +24,7 @@ import com.itskshitizsh.findingbus.login.LoginActivity;
 public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
 
     private String currentUserName = "unknown";
@@ -81,9 +70,7 @@ public class HomeActivity extends AppCompatActivity {
         mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        tabLayout.setupWithViewPager(mViewPager);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
