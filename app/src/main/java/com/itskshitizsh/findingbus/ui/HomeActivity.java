@@ -21,9 +21,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.itskshitizsh.findingbus.Manifest;
 import com.itskshitizsh.findingbus.R;
-import com.itskshitizsh.findingbus.fragments.Bus1Fragment;
 import com.itskshitizsh.findingbus.fragments.FragmentPageAdapter;
 import com.itskshitizsh.findingbus.login.LoginActivity;
 
@@ -105,6 +103,8 @@ public class HomeActivity extends AppCompatActivity {
     private void askPermission() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } else {
+            mViewPager.setAdapter(adapter);
         }
     }
 
@@ -112,7 +112,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode==1) {
-            if (grantResults[0]==0) {
+            if (grantResults[0] == 0) {  // 0 for permission granted
                 mViewPager.setAdapter(adapter);
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
