@@ -111,14 +111,15 @@ public class HomeActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_logOut :
-                        FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-                        finish();
-                    case R.id.nav_schedule:
-                        startActivity(new Intent(HomeActivity.this, BusScheduleActivity.class));
+                if (item.getItemId() == R.id.nav_logOut) {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                    finish();
                 }
+                if (item.getItemId() == R.id.nav_schedule) {
+                    startActivity(new Intent(HomeActivity.this, BusScheduleActivity.class));
+                }
+
                 return false;
             }
         });
