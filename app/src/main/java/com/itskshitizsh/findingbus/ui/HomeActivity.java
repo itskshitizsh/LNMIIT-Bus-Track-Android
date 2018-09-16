@@ -116,6 +116,8 @@ public class HomeActivity extends AppCompatActivity {
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                         finish();
+                    case R.id.nav_schedule:
+                        startActivity(new Intent(HomeActivity.this, BusScheduleActivity.class));
                 }
                 return false;
             }
