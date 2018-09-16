@@ -22,7 +22,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.itskshitizsh.findingbus.R;
 import com.itskshitizsh.findingbus.fragments.FragmentPageAdapter;
 import com.itskshitizsh.findingbus.login.LoginActivity;
@@ -39,7 +42,9 @@ public class HomeActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce = false;
     private FragmentPagerAdapter adapter;
 
-    private static final int MENU_ITEM_ID = 255;
+
+    private FirebaseRemoteConfig remoteConfig;
+    private String busInfo = "Sorry, no information available";
 
 
     @Override
@@ -47,6 +52,23 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        remoteConfig = FirebaseRemoteConfig.getInstance();
+
+
+        remoteConfig.fetch(0)
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+
+                            remoteConfig.activateFetched();
+                        } else {
+                            Toast.makeText(HomeActivity.this, "Loading bus information Failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        busInfo = remoteConfig.getString("bus_information");
+                    }
+                });
 
 
         Intent intent = getIntent();
@@ -158,7 +180,7 @@ public class HomeActivity extends AppCompatActivity {
         AlertDialog alertDialog;
         builder.setCancelable(false);
         builder.setTitle("Bus information");
-        builder.setMessage(getResources().getString(R.string.bus_info));
+        builder.setMessage(busInfo);
         builder.setIcon(getResources().getDrawable(R.drawable.ic_bus_icon));
         builder.setPositiveButton("GOT IT", null);
         alertDialog = builder.create();
