@@ -3,6 +3,7 @@ package com.itskshitizsh.findingbus.login;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -33,11 +34,13 @@ import com.itskshitizsh.findingbus.ui.HomeActivity;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    private static final int RC_SIGN_IN =1;
+    private static final int RC_SIGN_IN = 1;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = ".LoginActivity";
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
+
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    public void googleSignIn( ) {
+    public void googleSignIn() {
         progressBar.setVisibility(View.VISIBLE);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -207,9 +210,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     user.updatePassword(password);
                     String username = user.getDisplayName();
                     String userEmail = user.getEmail();
-                    Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-                    intent.putExtra("username",username);
-                    intent.putExtra("userEmail",userEmail);
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.putExtra("username", username);
+                    intent.putExtra("userEmail", userEmail);
                     startActivity(intent);
                     finish();
                 }
@@ -220,4 +223,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, R.string.back_hint_to_exit, Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+    }
 }
