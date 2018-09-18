@@ -1,5 +1,6 @@
 package com.itskshitizsh.findingbus.login;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -39,6 +42,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String TAG = ".LoginActivity";
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
+    EditText userPasswordEditText;
+    private EditText userNameEditText;
 
     private boolean doubleBackToExitPressedOnce = false;
 
@@ -49,26 +54,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getWindow().setBackgroundDrawableResource(R.drawable.lnmiit);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);   // So that keyboard doesn't pop up every time user open app
 
+        userNameEditText = findViewById(R.id.userEmailAddress);
+        userPasswordEditText = findViewById(R.id.userPassword);
+
         findViewById(R.id.logInButton).setOnClickListener(this);
         findViewById(R.id.google_button).setOnClickListener(this);
 
         progressBar = findViewById(R.id.progress_bar);
 
+        userPasswordEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (i == KeyEvent.KEYCODE_ENTER) {
+                        logIn();
+                    }
+                }
+                return false;
+            }
+        });
+
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = this.getCurrentFocus();
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
         switch (i) {
-            //   case R.id.signUpButton:
-            //            signUp();
-            //      Toast.makeText(getApplicationContext(),"Need to Add Function!",Toast.LENGTH_SHORT).show();
-            //    break;
-
             case R.id.google_button:
                 googleSignIn();
                 break;
-
             case R.id.logInButton:
                 logIn();
                 break;
@@ -79,8 +99,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void logIn() {
         // LogIn Logic Here!
-        EditText userNameEditText = findViewById(R.id.userEmailAddress);
-        EditText userPasswordEditText = findViewById(R.id.userPassword);
 
 //        RadioButton termsAndConditions = findViewById(R.id.radioButton);
 
@@ -94,6 +112,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 userPasswordEditText.setError("Enter Password");
             } else {
 
+                hideKeyboard();
                 progressBar.setVisibility(View.VISIBLE);
 
                 String email = userNameEditText.getText().toString().trim();
