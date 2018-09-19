@@ -47,6 +47,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean doubleBackToExitPressedOnce = false;
 
+    private boolean isPasswordAlertDialogOpen = false;
+    private AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,6 +206,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void showPasswordAlertDialog() {
 
+        isPasswordAlertDialogOpen = true;
+
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginActivity.this);
         alertDialog.setTitle("PASSWORD");
         alertDialog.setMessage("Enter Password");
@@ -225,6 +230,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(LoginActivity.this, "Enter valid password", Toast.LENGTH_SHORT).show();
                     showPasswordAlertDialog();
                 } else {
+                    isPasswordAlertDialogOpen = false;
                     FirebaseUser user = mAuth.getCurrentUser();
                     user.updatePassword(password);
                     String username = user.getDisplayName();
@@ -238,9 +244,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        alertDialog.show();
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mAuth.signOut();
+                isPasswordAlertDialogOpen = false;
+            }
+        });
+
+        dialog = alertDialog.create();
+        dialog.show();
+
 
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuth.getCurrentUser() != null) {
+            mAuth.signOut();
+        }
+
+        if (isPasswordAlertDialogOpen) {
+            dialog.dismiss();
+        }
+    }
+
 
 
     @Override
