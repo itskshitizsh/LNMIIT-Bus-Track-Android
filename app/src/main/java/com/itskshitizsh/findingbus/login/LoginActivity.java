@@ -210,7 +210,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginActivity.this);
         alertDialog.setTitle("PASSWORD");
-        alertDialog.setMessage("Enter Password");
+        alertDialog.setMessage("Enter Password (Min. six characters)");
         alertDialog.setCancelable(false);
 
         final EditText input = new EditText(LoginActivity.this);
@@ -227,7 +227,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onClick(DialogInterface dialog, int which) {
                 String password = input.getText().toString().trim();
                 if (password.equals("")) {
-                    Toast.makeText(LoginActivity.this, "Enter valid password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Enter valid password!", Toast.LENGTH_SHORT).show();
+                    showPasswordAlertDialog();
+                } else if (password.length() < 6) {
+                    Toast.makeText(LoginActivity.this, "Too short!", Toast.LENGTH_SHORT).show();
                     showPasswordAlertDialog();
                 } else {
                     isPasswordAlertDialogOpen = false;
