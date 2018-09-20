@@ -35,6 +35,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="current_bus_schedule">Current Bus schedule</string>
+    <string name="default_min">0 Min</string>
+    <string name="time_duration">Time Duration</string>
+    <string name="distance">Distance</string>
+    <string name="default_km">0.0 Km</string>
 
 
 </resources>

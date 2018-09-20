@@ -6,9 +6,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -20,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,7 +29,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.itskshitizsh.findingbus.R;
-import com.itskshitizsh.findingbus.fragments.FragmentPageAdapter;
+import com.itskshitizsh.findingbus.fragments.Bus1Fragment;
+import com.itskshitizsh.findingbus.fragments.Bus2Fragment;
+import com.itskshitizsh.findingbus.fragments.Bus3Fragment;
 import com.itskshitizsh.findingbus.login.LoginActivity;
 
 public class HomeActivity extends AppCompatActivity {
@@ -46,6 +50,9 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseRemoteConfig remoteConfig;
     private String busInfo = "Sorry, no information available";
 
+    private BottomNavigationView bottomNavigationView;
+
+    private FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,19 +101,6 @@ public class HomeActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        adapter = new FragmentPageAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById(R.id.container);
-
-
-
-        //Set up tab layout with view pager
-        TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -124,16 +118,42 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        bottomNavigationView = findViewById(R.id.navigation);
+        frameLayout = findViewById(R.id.fragment_container);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_bus1 :
+                        loadFragment(new Bus1Fragment());
+                        return true;
+                    case R.id.navigation_bus2 :
+                        loadFragment(new Bus2Fragment());
+                        return true;
+                    case R.id.navigation_bus3 :
+                        loadFragment(new Bus3Fragment());
+                        return true;
+                }
+                return false;
+            }
+        });
+
         //Ask for location permission
         askPermission();
 
+    }
+
+    private void loadFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container,fragment)
+                .commit();
     }
 
     private void askPermission() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
-            mViewPager.setAdapter(adapter);
+            loadFragment(new Bus1Fragment());
         }
     }
 
@@ -142,7 +162,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode==1) {
             if (grantResults[0] == 0) {  // 0 for permission granted
-                mViewPager.setAdapter(adapter);
+                loadFragment(new Bus1Fragment());
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setIcon(R.drawable.ic_caution);
