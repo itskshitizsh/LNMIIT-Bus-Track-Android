@@ -68,7 +68,7 @@ public class Bus3Fragment extends Fragment implements OnMapReadyCallback, Google
             @Override
             public void onClick(View v) {
                 if (mapReady) {
-                    m_map.animateCamera(CameraUpdateFactory.newCameraPosition(target), 3000, null);
+                    m_map.animateCamera(CameraUpdateFactory.newCameraPosition(target), 1000, null);
                 } else {
                     Toast.makeText(getContext(), "Please Wait, Map is not ready yet!", Toast.LENGTH_SHORT).show();
                 }

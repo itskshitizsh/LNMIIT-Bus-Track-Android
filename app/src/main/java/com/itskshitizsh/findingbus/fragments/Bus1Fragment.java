@@ -95,7 +95,7 @@ public class Bus1Fragment extends Fragment implements OnMapReadyCallback, Google
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        m_map.animateCamera(CameraUpdateFactory.newCameraPosition(target), 3000, null);
+        m_map.animateCamera(CameraUpdateFactory.newCameraPosition(target), 1000, null);
 
     }
 
