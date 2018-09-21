@@ -210,7 +210,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginActivity.this);
         alertDialog.setTitle("PASSWORD");
-        alertDialog.setMessage("Enter Password (Min. six characters)");
+        alertDialog.setMessage("Enter Password (Min. 6 characters)");
         alertDialog.setCancelable(false);
 
         final EditText input = new EditText(LoginActivity.this);
@@ -257,7 +257,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         dialog = alertDialog.create();
         dialog.show();
-
 
     }
 

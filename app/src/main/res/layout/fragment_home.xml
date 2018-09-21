@@ -54,7 +54,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="3dp"
                 android:background="@color/colorWhite"
-                android:contentDescription="@string/time_duration"
+                android:contentDescription="@string/next_stop"
                 android:src="@drawable/clock" />
 
             <TextView
@@ -65,7 +65,7 @@
                 android:layout_marginTop="0dp"
                 android:background="@android:color/white"
                 android:padding="5dp"
-                android:text="@string/default_min"
+                android:text="@string/default_stop"
                 android:textAlignment="center"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="16sp" />

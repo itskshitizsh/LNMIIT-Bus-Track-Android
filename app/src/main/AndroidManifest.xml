@@ -47,7 +47,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.BusScheduleActivity"
-            android:parentActivityName=".ui.HomeActivity"></activity>
+            android:parentActivityName=".ui.HomeActivity" />
     </application>
 
 </manifest>
