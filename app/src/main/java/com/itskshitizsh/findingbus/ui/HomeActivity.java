@@ -24,6 +24,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -96,11 +98,7 @@ public class HomeActivity extends AppCompatActivity {
             currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
             currentUserName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         }
-
-        /*TextView userDetailTextView = findViewById(R.id.user_detail_text_view);
         String userDetail = currentUserName + "\n" + currentUserEmail;
-        userDetailTextView.setText(userDetail);*/
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -112,6 +110,11 @@ public class HomeActivity extends AppCompatActivity {
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View view = navigationView.getHeaderView(0);
+
+        TextView userInfo = view.findViewById(R.id.user_detail_text_view);
+        userInfo.setText(userDetail);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
