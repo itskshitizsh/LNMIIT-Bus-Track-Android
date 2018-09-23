@@ -32,6 +32,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.itskshitizsh.findingbus.BuildConfig;
 import com.itskshitizsh.findingbus.R;
 import com.itskshitizsh.findingbus.fragments.Bus1Fragment;
 import com.itskshitizsh.findingbus.fragments.Bus2Fragment;
@@ -71,10 +73,17 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
         }
 
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
         remoteConfig = FirebaseRemoteConfig.getInstance();
+        remoteConfig.setConfigSettings(configSettings);
+        long cacheExpiration = 3600;
+        if (remoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
+            cacheExpiration = 0;
+        }
 
-
-        remoteConfig.fetch(0)
+        remoteConfig.fetch(cacheExpiration)
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -154,6 +163,7 @@ public class HomeActivity extends AppCompatActivity {
         askPermission();
 
     }
+
 
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
