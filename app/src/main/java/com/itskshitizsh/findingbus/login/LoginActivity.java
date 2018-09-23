@@ -3,6 +3,8 @@ package com.itskshitizsh.findingbus.login;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -65,6 +67,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         progressBar = findViewById(R.id.progress_bar);
 
+        checkNetConnection();
+
         userPasswordEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -76,7 +80,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 return false;
             }
         });
+    }
 
+    private boolean checkNetConnection() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        try {
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            if (networkInfo == null || !(networkInfo.isConnected())) {
+                Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return true;
     }
 
     private void hideKeyboard() {
@@ -90,10 +107,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int i = v.getId();
         switch (i) {
             case R.id.google_button:
-                googleSignIn();
+                if (checkNetConnection()) {
+                    googleSignIn();
+                }
                 break;
             case R.id.logInButton:
-                logIn();
+                if (checkNetConnection()) {
+                    logIn();
+                }
                 break;
             default:
                 break;
@@ -166,6 +187,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        progressBar.setVisibility(View.INVISIBLE);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -263,9 +285,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStop() {
         super.onStop();
+        /*
         if (mAuth.getCurrentUser() != null) {
             mAuth.signOut();
         }
+        */
 
         if (isPasswordAlertDialogOpen) {
             dialog.dismiss();
