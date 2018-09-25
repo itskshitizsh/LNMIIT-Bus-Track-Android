@@ -80,6 +80,20 @@
         android:layout_height="match_parent">
     </fragment>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/satellite_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="134dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_satellite"
+        app:backgroundTint="@color/colorWhite"
+        app:elevation="4dp"
+        app:layout_anchor="@+id/map"
+        app:layout_anchorGravity="right|bottom" />
+
     <!--Set it-->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -90,7 +104,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="70dp"
         android:src="@drawable/ic_bus_icon"
-        app:backgroundTint="@android:color/holo_orange_dark"
+        app:backgroundTint="@color/colorWhite"
         app:elevation="4dp"
         app:layout_anchor="@+id/map"
         app:layout_anchorGravity="right|bottom" />

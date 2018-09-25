@@ -49,7 +49,6 @@ public class Bus2Fragment extends Fragment implements OnMapReadyCallback, Google
     private LocationRequest locationRequest;
     private Marker currentLocation;
 
-    private FloatingActionButton fab;
 
     public Bus2Fragment() {
         // Required empty public constructor
@@ -63,7 +62,7 @@ public class Bus2Fragment extends Fragment implements OnMapReadyCallback, Google
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        fab = rootView.findViewById(R.id.fab);
+        FloatingActionButton fab = rootView.findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +71,20 @@ public class Bus2Fragment extends Fragment implements OnMapReadyCallback, Google
                     m_map.animateCamera(CameraUpdateFactory.newCameraPosition(target), 1000, null);
                 } else {
                     Toast.makeText(getContext(), "Please Wait, Map is not ready yet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        FloatingActionButton satelliteFab = rootView.findViewById(R.id.satellite_fab);
+        satelliteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mapReady) {
+                    if (m_map.getMapType() == GoogleMap.MAP_TYPE_NORMAL) {
+                        m_map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                    } else {
+                        m_map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                    }
                 }
             }
         });
