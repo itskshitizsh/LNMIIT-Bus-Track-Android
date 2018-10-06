@@ -88,9 +88,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="134dp"
         android:layout_marginEnd="16dp"
+        app:elevation="4dp"
         android:src="@drawable/ic_satellite"
         app:backgroundTint="@color/colorWhite"
-        app:elevation="4dp"
         app:layout_anchor="@+id/map"
         app:layout_anchorGravity="right|bottom" />
 

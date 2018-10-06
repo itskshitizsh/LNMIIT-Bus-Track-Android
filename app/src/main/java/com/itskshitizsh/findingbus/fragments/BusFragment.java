@@ -2,6 +2,7 @@ package com.itskshitizsh.findingbus.fragments;
 
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -82,15 +83,17 @@ public class BusFragment extends Fragment implements OnMapReadyCallback, GoogleA
             }
         });
 
-        FloatingActionButton satelliteFab = rootView.findViewById(R.id.satellite_fab);
+        final FloatingActionButton satelliteFab = rootView.findViewById(R.id.satellite_fab);
         satelliteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mapReady) {
                     if (m_map.getMapType() == GoogleMap.MAP_TYPE_NORMAL) {
                         m_map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                        satelliteFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                     } else {
                         m_map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                        satelliteFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorWhite)));
                     }
                 }
             }
