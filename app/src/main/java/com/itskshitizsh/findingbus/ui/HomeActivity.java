@@ -35,9 +35,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.itskshitizsh.findingbus.BuildConfig;
 import com.itskshitizsh.findingbus.R;
-import com.itskshitizsh.findingbus.fragments.Bus1Fragment;
-import com.itskshitizsh.findingbus.fragments.Bus2Fragment;
-import com.itskshitizsh.findingbus.fragments.Bus3Fragment;
+import com.itskshitizsh.findingbus.fragments.BusFragment;
 import com.itskshitizsh.findingbus.login.LoginActivity;
 
 public class HomeActivity extends AppCompatActivity {
@@ -146,13 +144,28 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_bus1 :
-                        loadFragment(new Bus1Fragment());
+                        Bundle bus1Args = new Bundle();
+                        bus1Args.putDouble("lat", 26.937996);
+                        bus1Args.putDouble("lang", 75.922457);
+                        BusFragment busFragment = new BusFragment();
+                        busFragment.setArguments(bus1Args);
+                        loadFragment(busFragment);
                         return true;
                     case R.id.navigation_bus2 :
-                        loadFragment(new Bus2Fragment());
+                        Bundle bus2Args = new Bundle();
+                        bus2Args.putDouble("lat", 26.915565);
+                        bus2Args.putDouble("lang", 75.817029);
+                        BusFragment bus2Fragment = new BusFragment();
+                        bus2Fragment.setArguments(bus2Args);
+                        loadFragment(bus2Fragment);
                         return true;
                     case R.id.navigation_bus3 :
-                        loadFragment(new Bus3Fragment());
+                        Bundle bus3Args = new Bundle();
+                        bus3Args.putDouble("lat", 26.897476);
+                        bus3Args.putDouble("lang", 75.831578);
+                        BusFragment bus3Fragment = new BusFragment();
+                        bus3Fragment.setArguments(bus3Args);
+                        loadFragment(bus3Fragment);
                         return true;
                 }
                 return false;
@@ -176,7 +189,7 @@ public class HomeActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
 
-            loadFragment(new Bus1Fragment());
+            loadFragment(new BusFragment());
         }
     }
 
@@ -185,7 +198,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode==1) {
             if (grantResults[0] == 0) {  // 0 for permission granted
-                loadFragment(new Bus1Fragment());
+                loadFragment(new BusFragment());
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setIcon(R.drawable.ic_caution);
