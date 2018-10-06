@@ -32,15 +32,11 @@ import com.itskshitizsh.findingbus.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Bus3Fragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class BusFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private static LatLng rajaPark = new LatLng(26.897476, 75.831578);
-    static final MarkerOptions rajaParkMarker = new MarkerOptions()
-            .position(rajaPark).title("Raja Park");
-    static final CameraPosition target = CameraPosition.builder()
-            .zoom(15)
-            .target(rajaPark)
-            .build();
+    private static LatLng currentBusLocation;
+    private MarkerOptions marker;
+    private CameraPosition target;
     private boolean mapReady = false;
     private GoogleMap m_map;
 
@@ -49,20 +45,32 @@ public class Bus3Fragment extends Fragment implements OnMapReadyCallback, Google
     private LocationRequest locationRequest;
     private Marker currentLocation;
 
-
-    public Bus3Fragment() {
+    public BusFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Double currentBusLat = bundle.getDouble("lat");
+            Double currentBusLang = bundle.getDouble("lang");
+            currentBusLocation = new LatLng(currentBusLat, currentBusLang);
+            marker = new MarkerOptions().position(currentBusLocation);
+            target = CameraPosition.builder()
+                    .zoom(15)
+                    .target(currentBusLocation)
+                    .build();
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         FloatingActionButton fab = rootView.findViewById(R.id.fab);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,9 +102,12 @@ public class Bus3Fragment extends Fragment implements OnMapReadyCallback, Google
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         m_map = googleMap;
         mapReady = true;
-        m_map.addMarker(rajaParkMarker);
+        if (marker != null) {
+            m_map.addMarker(marker);
+        }
 
         m_map.setMyLocationEnabled(true);
         googleApiClient = new GoogleApiClient.Builder(getContext())
@@ -105,7 +116,9 @@ public class Bus3Fragment extends Fragment implements OnMapReadyCallback, Google
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        m_map.animateCamera(CameraUpdateFactory.newCameraPosition(target), 1000, null);
+        if (target != null) {
+            m_map.animateCamera(CameraUpdateFactory.newCameraPosition(target), 1000, null);
+        }
 
     }
 
@@ -125,6 +138,7 @@ public class Bus3Fragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
+
     @Override
     public void onLocationChanged(Location location) {
 
@@ -138,7 +152,7 @@ public class Bus3Fragment extends Fragment implements OnMapReadyCallback, Google
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         currentLocation = m_map.addMarker(markerOptions);
 
-        Toast.makeText(getContext(), "Location Changed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),"Location Changed",Toast.LENGTH_SHORT).show();
 
     }
 
