@@ -11,14 +11,14 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/app_logo"
+        android:contentDescription="@string/user_profile"
         android:id="@+id/user_image_view"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_person_24dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
+        android:paddingTop="4dp"
         android:id="@+id/user_detail_text_view"
         android:text="@string/user_email_id"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />

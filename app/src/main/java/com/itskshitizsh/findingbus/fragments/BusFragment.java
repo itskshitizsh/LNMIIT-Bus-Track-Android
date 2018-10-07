@@ -75,10 +75,11 @@ public class BusFragment extends Fragment implements OnMapReadyCallback, GoogleA
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mapReady) {
+                if (mapReady && target != null) {
                     m_map.animateCamera(CameraUpdateFactory.newCameraPosition(target), 1000, null);
                 } else {
                     Toast.makeText(getContext(), "Please Wait, Map is not ready yet!", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

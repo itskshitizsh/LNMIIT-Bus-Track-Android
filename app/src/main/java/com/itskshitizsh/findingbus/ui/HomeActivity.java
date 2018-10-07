@@ -36,9 +36,10 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.itskshitizsh.findingbus.BuildConfig;
 import com.itskshitizsh.findingbus.R;
 import com.itskshitizsh.findingbus.fragments.BusFragment;
+import com.itskshitizsh.findingbus.fragments.SettingsFragment;
 import com.itskshitizsh.findingbus.login.LoginActivity;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
 
@@ -54,21 +55,28 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseRemoteConfig remoteConfig;
     private String busInfo = "Sorry, no information available";
 
+    private BottomNavigationView bottomNavigationView;
     private boolean isNetworkConnected = false;
+
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED
-                || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+        try {
+            ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED
+                    || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
 
-            isNetworkConnected = true;
+                isNetworkConnected = true;
 
-        } else {
-            Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
@@ -116,29 +124,15 @@ public class HomeActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        View view = navigationView.getHeaderView(0);
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_home);
 
+        View view = navigationView.getHeaderView(0);
         TextView userInfo = view.findViewById(R.id.user_detail_text_view);
         userInfo.setText(userDetail);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.nav_logOut) {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-                    finish();
-                }
-                if (item.getItemId() == R.id.nav_schedule) {
-                    startActivity(new Intent(HomeActivity.this, BusScheduleActivity.class));
-                }
-
-                return false;
-            }
-        });
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
+        bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -251,6 +245,10 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (bottomNavigationView.getVisibility() == View.GONE) {
+            loadFragment(new BusFragment());
+            bottomNavigationView.setVisibility(View.VISIBLE);
+            navigationView.setCheckedItem(R.id.nav_home);
         } else {
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
@@ -270,4 +268,32 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.nav_logOut:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                finish();
+                break;
+            case R.id.nav_schedule:
+                startActivity(new Intent(HomeActivity.this, BusScheduleActivity.class));
+                break;
+            case R.id.nav_home:
+                loadFragment(new BusFragment());
+                bottomNavigationView.setVisibility(View.VISIBLE);
+                break;
+            case R.id.nav_nearMe: // TODO: NearMe calculation
+                break;
+            case R.id.nav_settings:
+                loadFragment(new SettingsFragment());
+                bottomNavigationView.setVisibility(View.GONE);
+                break;
+            default:
+                break;
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

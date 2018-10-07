@@ -2,6 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item>
-        <bitmap android:src="@drawable/doctor_strange_avengers_infinity_war" />
+        <bitmap android:src="@drawable/finding_bus" />
     </item>
 </layer-list>
