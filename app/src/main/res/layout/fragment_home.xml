@@ -22,8 +22,7 @@
 
             <ImageView
                 android:layout_width="30dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="3dp"
+                android:layout_height="28dp"
                 android:background="@color/colorWhite"
                 android:contentDescription="@string/distance"
                 android:src="@drawable/distance" />
@@ -51,10 +50,10 @@
 
             <ImageView
                 android:layout_width="30dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="3dp"
+                android:layout_height="28dp"
                 android:background="@color/colorWhite"
                 android:contentDescription="@string/next_stop"
+                android:scaleType="fitXY"
                 android:src="@drawable/clock" />
 
             <TextView
