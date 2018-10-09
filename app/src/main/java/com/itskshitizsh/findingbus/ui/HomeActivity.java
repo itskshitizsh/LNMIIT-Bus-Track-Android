@@ -296,4 +296,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        navigationView.setCheckedItem(R.id.nav_home);
+    }
 }
